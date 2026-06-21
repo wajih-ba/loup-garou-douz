@@ -49,6 +49,9 @@
   margin: 0 auto;
   padding: 16px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .page-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; }
 .page-subtitle { color: var(--text-secondary); margin-bottom: 18px; font-size: 0.9rem; }
@@ -357,11 +360,11 @@
   inset: 0;
   background: rgba(0,0,0,0.7);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 1000;
   backdrop-filter: blur(4px);
-  padding: 12px;
+  padding: 20px 12px;
 }
 .modal-content {
   background: var(--bg-secondary);
@@ -461,12 +464,12 @@
 .target-item:hover { border-color: var(--accent); background: rgba(240,192,64,0.05); }
 
 /* ── Custom Role Form ── */
-.form-group { margin-bottom: 12px; }
+.form-group { margin-bottom: 14px; }
 .form-group label {
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -475,19 +478,20 @@
 .form-group input[type="number"],
 .form-group textarea {
   width: 100%;
-  padding: 9px 12px;
+  padding: 10px 14px;
   border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.15);
   background: var(--bg-primary);
   color: #fff;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   outline: none;
+  transition: border-color 0.2s;
 }
 .form-group input:focus,
 .form-group textarea:focus { border-color: var(--accent); }
 .form-group textarea { resize: vertical; font-family: inherit; }
-.form-row { display: flex; gap: 10px; }
-.form-error { color: #d94a4a; font-size: 0.82rem; margin-bottom: 10px; padding: 6px 10px; background: rgba(217,74,74,0.1); border-radius: 6px; }
+.form-row { display: flex; gap: 12px; }
+.form-error { color: #d94a4a; font-size: 0.85rem; margin-bottom: 12px; padding: 8px 12px; background: rgba(217,74,74,0.15); border-radius: 8px; border: 1px solid rgba(217,74,74,0.3); }
 
 .photo-dropzone {
   border: 2px dashed rgba(255,255,255,0.15);
