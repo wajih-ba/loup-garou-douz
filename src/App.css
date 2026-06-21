@@ -586,11 +586,11 @@
   .app-header { padding: 10px 12px; }
   .app-title { font-size: 1rem; }
   .nav-btn { padding: 6px 10px; font-size: 0.75rem; }
-  .main-content { padding: 12px; }
+  .main-content { padding: 12px 8px; }
   .summary-bar { flex-direction: column; align-items: stretch; }
   .summary-actions { justify-content: stretch; }
   .summary-actions .btn { flex: 1; text-align: center; }
-  .role-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .role-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
   .role-card-image { height: 110px; font-size: 3rem; }
   .role-card-body h3 { font-size: 0.82rem; }
   .role-card-body p { font-size: 0.7rem; }
