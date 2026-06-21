@@ -17,8 +17,18 @@ function PlayerRow({ a, i, status, killPlayer, openInfect, setRetroIdx }) {
   if (isWounded) { statusIcon = '🟡'; statusLabel = 'مجروح'; }
   if (isDead) { statusIcon = '⚫'; statusLabel = 'ميت'; }
 
+  const team = a.infected ? 'werewolf' : role.team;
+  const teamBg = team === 'werewolf'
+    ? 'rgba(217, 74, 74, 0.13)'
+    : team === 'solo'
+      ? 'rgba(155, 89, 182, 0.13)'
+      : 'rgba(74, 144, 217, 0.13)';
+
   return (
-    <div className={`player-row ${isDead ? 'dead' : ''} ${isWounded ? 'wounded' : ''}`}>
+    <div
+      className={`player-row ${isDead ? 'dead' : ''} ${isWounded ? 'wounded' : ''}`}
+      style={{ background: teamBg, borderLeft: `3px solid ${tc}` }}
+    >
       <span className="player-status-icon">{statusIcon}</span>
       <span className="player-row-name">{a.player}</span>
       <span className="player-row-role" style={{ color: tc }}>{roleDisplay}</span>

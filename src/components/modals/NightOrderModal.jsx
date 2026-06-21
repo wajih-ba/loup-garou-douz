@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Role } from '../../data/roles.js';
 
 export default function NightOrderModal({ roles, onSave, onClose }) {
-  useEffect(() => { document.body.style.overflow = 'hidden'; return () => { document.body.style.overflow = ''; }; }, []);
   const waking = roles.filter(r => r.wakeUp)
     .sort((a, b) => (a.nightOrder ?? 99) - (b.nightOrder ?? 99));
   const [order, setOrder] = useState(() => waking.map(r => r.id));
@@ -18,7 +18,7 @@ export default function NightOrderModal({ roles, onSave, onClose }) {
     });
   };
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal-content night-order-modal">
         <div className="modal-header">
@@ -49,6 +49,7 @@ export default function NightOrderModal({ roles, onSave, onClose }) {
           <button className="btn btn-primary" onClick={() => onSave(order)}>Enregistrer</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

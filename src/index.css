@@ -22,6 +22,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   touch-action: manipulation;
+  overflow: hidden;
 }
 
 body {
@@ -29,17 +30,20 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100dvh;
-  overflow-x: hidden;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   padding-bottom: var(--safe-bottom);
 }
 
 #root {
-  min-height: 100dvh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;   /* IE/Edge */
 }
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { background: #2a3a5a; border-radius: 4px; }
+::-webkit-scrollbar { width: 0; height: 0; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: transparent; }

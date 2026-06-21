@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Role } from '../../data/roles.js';
 
 export default function InfectModal({ infectorIdx, assignments, playerStatus, onInfect, onClose }) {
-  useEffect(() => { document.body.style.overflow = 'hidden'; return () => { document.body.style.overflow = ''; }; }, []);
   const targets = assignments
     .map((a, i) => ({ ...a, idx: i }))
     .filter(t => t.idx !== infectorIdx && playerStatus[t.idx] !== 'dead' && t.role.team !== 'werewolf' && !t.infected);
@@ -14,7 +13,7 @@ export default function InfectModal({ infectorIdx, assignments, playerStatus, on
 
   const infector = assignments[infectorIdx];
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal-content">
         <div className="modal-header">
@@ -42,6 +41,7 @@ export default function InfectModal({ infectorIdx, assignments, playerStatus, on
           <button className="btn btn-secondary" onClick={onClose}>Annuler</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

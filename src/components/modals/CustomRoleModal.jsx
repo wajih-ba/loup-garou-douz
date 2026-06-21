@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
 const teams = [
   { id: 'village', icon: '🏘️', label: 'Village' },
@@ -7,7 +8,6 @@ const teams = [
 ];
 
 export default function CustomRoleModal({ editingId, roles, onSave, onDelete, onClose }) {
-  useEffect(() => { document.body.style.overflow = 'hidden'; return () => { document.body.style.overflow = ''; }; }, []);
   const existing = editingId ? roles.find(r => r.id === editingId) : null;
   const [name, setName] = useState(existing?.name || '');
   const [emoji, setEmoji] = useState(existing?.emoji || '');
@@ -49,7 +49,7 @@ export default function CustomRoleModal({ editingId, roles, onSave, onDelete, on
   const onDragOver = (e) => { e.preventDefault(); setDragOver(true); };
   const onDragLeave = () => setDragOver(false);
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal-content">
         <div className="modal-header">
@@ -134,6 +134,7 @@ export default function CustomRoleModal({ editingId, roles, onSave, onDelete, on
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

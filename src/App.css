@@ -341,13 +341,13 @@
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
-  background: rgba(255,255,255,0.04);
   border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.06);
   flex-wrap: wrap;
+  transition: background 0.3s ease;
 }
-.player-row.dead { opacity: 0.4; background: rgba(0,0,0,0.2); }
-.player-row.wounded { border-color: rgba(240,192,64,0.3); background: rgba(240,192,64,0.05); }
+.player-row.dead { opacity: 0.35; background: rgba(0,0,0,0.25) !important; border-left-color: rgba(255,255,255,0.1) !important; }
+.player-row.wounded { border-color: rgba(240,192,64,0.4) !important; outline: 1px solid rgba(240,192,64,0.2); }
 .player-status-icon { font-size: 0.85rem; width: 18px; text-align: center; }
 .player-row-name { font-weight: 600; min-width: 80px; font-size: 0.9rem; }
 .player-row-role { font-size: 0.82rem; flex: 1; min-width: 100px; }
@@ -363,11 +363,10 @@
   inset: 0;
   background: rgba(0,0,0,0.7);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   z-index: 1000;
   backdrop-filter: blur(4px);
-  padding: 20px 12px;
 }
 .modal-content {
   background: var(--bg-secondary);
@@ -378,12 +377,21 @@
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0,0,0,0.6);
   animation: fadeIn 0.25s ease;
+  margin: 16px;
+  position: relative;
 }
 .modal-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-secondary);
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 18px 0;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .modal-header h3 { font-size: 1.1rem; }
 .modal-close {
@@ -396,18 +404,27 @@
   line-height: 1;
   touch-action: manipulation;
 }
-.modal-body { padding: 14px 18px; }
+.modal-body {
+  padding: 14px 18px;
+}
 .modal-desc { color: var(--text-secondary); margin-bottom: 12px; font-size: 0.85rem; }
 .modal-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: var(--bg-secondary);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  padding: 0 18px 16px;
+  padding: 12px 18px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   flex-wrap: wrap;
 }
 
 /* ── Night Order ── */
-.night-order-modal .modal-content { max-width: 550px; }
+.modal-content.night-order-modal { max-width: 550px; }
 .night-order-list { display: flex; flex-direction: column; gap: 6px; }
 .night-order-item {
   display: flex;
@@ -601,7 +618,13 @@
   .player-row { font-size: 0.82rem; gap: 6px; padding: 8px; }
   .player-row-name { min-width: 60px; font-size: 0.82rem; }
   .player-row-role { font-size: 0.75rem; min-width: 70px; }
-  .modal-content { max-width: 100%; margin: 0 4px; max-height: 85dvh; }
+  .modal-content { margin: 12px 8px; max-width: 100%; max-height: 90dvh; }
+  .modal-header { padding: 14px 14px 10px; }
+  .modal-header h3 { font-size: 1rem; }
+  .modal-body { padding: 12px 14px; }
+  .modal-footer { padding: 10px 14px 14px; }
+  .form-row { flex-direction: column; gap: 14px; }
+  .modal-content.night-order-modal { max-width: 100%; }
   .night-order-item { font-size: 0.82rem; }
   .night-order-msg { font-size: 0.65rem; }
   .guide-card { padding: 12px; }

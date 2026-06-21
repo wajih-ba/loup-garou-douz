@@ -1,12 +1,11 @@
-import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function RetroSwapModal({ fromIdx, assignments, playerStatus, onSwap, onClose }) {
-  useEffect(() => { document.body.style.overflow = 'hidden'; return () => { document.body.style.overflow = ''; }; }, []);
   const targets = assignments
     .map((a, i) => ({ ...a, idx: i }))
     .filter(t => t.idx !== fromIdx && playerStatus[t.idx] !== 'dead');
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal-content">
         <div className="modal-header">
@@ -36,6 +35,7 @@ export default function RetroSwapModal({ fromIdx, assignments, playerStatus, onS
           <button className="btn btn-secondary" onClick={onClose}>Annuler</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
