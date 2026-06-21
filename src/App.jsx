@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { ROLES, Role } from './data/roles.js';
+import { useLocalStorage } from './hooks/useLocalStorage.js';
 import Header from './components/Header.jsx';
 import RolesView from './components/RolesView.jsx';
 import PlayersView from './components/PlayersView.jsx';
@@ -16,17 +17,17 @@ function shuffle(arr) {
 }
 
 export default function App() {
-  const [roles, setRoles] = useState(() => [...ROLES]);
-  const [selections, setSelections] = useState(() => {
+  const [roles, setRoles] = useLocalStorage('loupgarou_roles', () => [...ROLES]);
+  const [selections, setSelections] = useLocalStorage('loupgarou_selections', () => {
     const s = {};
     ROLES.forEach(r => { s[r.id] = r.defaultCount; });
     return s;
   });
-  const [roleOrder, setRoleOrder] = useState(() => ROLES.map(r => r.id));
-  const [players, setPlayers] = useState([]);
-  const [assignments, setAssignments] = useState([]);
-  const [playerStatus, setPlayerStatus] = useState([]);
-  const [currentView, setCurrentView] = useState('roles');
+  const [roleOrder, setRoleOrder] = useLocalStorage('loupgarou_roleOrder', () => ROLES.map(r => r.id));
+  const [players, setPlayers] = useLocalStorage('loupgarou_players', []);
+  const [assignments, setAssignments] = useLocalStorage('loupgarou_assignments', []);
+  const [playerStatus, setPlayerStatus] = useLocalStorage('loupgarou_playerStatus', []);
+  const [currentView, setCurrentView] = useLocalStorage('loupgarou_currentView', 'roles');
 
   const getNightPhases = useCallback(() => {
     return roles.filter(r =>
@@ -151,6 +152,18 @@ export default function App() {
     });
   }, [roles]);
 
+  const restoreDefaults = useCallback(() => {
+    setRoles([...ROLES]);
+    const s = {};
+    ROLES.forEach(r => { s[r.id] = r.defaultCount; });
+    setSelections(s);
+    setRoleOrder(ROLES.map(r => r.id));
+    setPlayers([]);
+    setAssignments([]);
+    setPlayerStatus([]);
+    setCurrentView('roles');
+  }, []);
+
   const resetGame = useCallback(() => {
     setAssignments([]);
     setPlayerStatus([]);
@@ -178,6 +191,7 @@ export default function App() {
     const nr = new Role({ ...roleData, id, nightOrder: null, wakeUp: false, ability: 'Rôle personnalisé' });
     setRoles(prev => [...prev, nr]);
     setSelections(s => ({ ...s, [id]: roleData.defaultCount || 1 }));
+    setRoleOrder(prev => [...prev, id]);
   }, []);
 
   const updateRole = useCallback((id, data) => {
@@ -190,6 +204,7 @@ export default function App() {
   const deleteRole = useCallback((id) => {
     setRoles(prev => prev.filter(r => r.id !== id));
     setSelections(s => { const n = { ...s }; delete n[id]; return n; });
+    setRoleOrder(prev => prev.filter(rid => rid !== id));
   }, []);
 
   const moveRoleOrder = useCallback((id, dir) => {
@@ -226,6 +241,7 @@ export default function App() {
             deleteRole={deleteRole}
             saveNightOrder={saveNightOrder}
             moveRoleOrder={moveRoleOrder}
+            restoreDefaults={restoreDefaults}
           />
         )}
         {currentView === 'players' && (

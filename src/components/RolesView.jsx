@@ -7,17 +7,36 @@ export default function RolesView({
   roles, selections, roleOrder, totalSelected,
   setCount, toggleWake, navigate,
   createRole, updateRole, deleteRole, saveNightOrder, moveRoleOrder,
+  restoreDefaults,
 }) {
   const [showCreate, setShowCreate] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [showNightOrder, setShowNightOrder] = useState(false);
+  const [confirmRestore, setConfirmRestore] = useState(false);
 
   const byTeam = (team) =>
     roles.filter(r => r.team === team).reduce((s, r) => s + (selections[r.id] || 0), 0);
 
+  const handleRestore = () => {
+    if (!confirmRestore) {
+      setConfirmRestore(true);
+      setTimeout(() => setConfirmRestore(false), 3000);
+      return;
+    }
+    restoreDefaults();
+    setConfirmRestore(false);
+  };
+
   return (
     <div className="fade-in">
       <div className="summary-bar">
+        <button
+          className={`btn ${confirmRestore ? 'btn-danger' : 'btn-secondary'} btn-restore`}
+          onClick={handleRestore}
+          title="Restaurer les valeurs par défaut"
+        >
+          {confirmRestore ? '⚠️ Confirmer ?' : '↺ Restaurer'}
+        </button>
         <div className="counts">
           <span><span className="dot" style={{ background: 'var(--team-village)' }} /> Village: {byTeam('village')}</span>
           <span><span className="dot" style={{ background: 'var(--team-werewolf)' }} /> Loups: {byTeam('werewolf')}</span>
