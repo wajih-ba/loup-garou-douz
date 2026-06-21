@@ -164,6 +164,10 @@ export default function App() {
     setCurrentView('roles');
   }, []);
 
+  const revivePlayer = useCallback((index) => {
+    setPlayerStatus(s => s.map((st, i) => i === index ? 'alive' : st));
+  }, []);
+
   const resetGame = useCallback(() => {
     setAssignments([]);
     setPlayerStatus([]);
@@ -261,6 +265,7 @@ export default function App() {
             playerStatus={playerStatus}
             getNightPhases={getNightPhases}
             killPlayer={killPlayer}
+            revivePlayer={revivePlayer}
             executeInfect={executeInfect}
             doRetroSwap={doRetroSwap}
             resetGame={resetGame}

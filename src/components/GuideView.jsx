@@ -3,7 +3,7 @@ import { Role } from '../data/roles.js';
 import InfectModal from './modals/InfectModal.jsx';
 import RetroSwapModal from './modals/RetroSwapModal.jsx';
 
-function PlayerRow({ a, i, status, killPlayer, openInfect, setRetroIdx }) {
+function PlayerRow({ a, i, status, killPlayer, revivePlayer, openInfect, setRetroIdx, hideNames }) {
   const role = a.role;
   const tc = a.infected ? Role.teamColor('werewolf') : Role.teamColor(role.team);
   const isDead = status === 'dead';
@@ -30,9 +30,14 @@ function PlayerRow({ a, i, status, killPlayer, openInfect, setRetroIdx }) {
       style={{ background: teamBg, borderLeft: `3px solid ${tc}` }}
     >
       <span className="player-status-icon">{statusIcon}</span>
-      <span className="player-row-name">{a.player}</span>
+      <span className={`player-row-name ${hideNames ? 'hidden-name' : ''}`}>
+        {hideNames ? '• • • • •' : a.player}
+      </span>
       <span className="player-row-role" style={{ color: tc }}>{roleDisplay}</span>
       <span className="player-row-status">{statusLabel}</span>
+      {isDead && (
+        <button className="btn-sm btn-revive" onClick={() => revivePlayer(i)} title="إحياء">↩</button>
+      )}
       {!isDead && (
         <>
           {isElder && !isWounded && <button className="btn-sm btn-wound" onClick={() => killPlayer(i)}>يجرح</button>}
@@ -52,10 +57,11 @@ function PlayerRow({ a, i, status, killPlayer, openInfect, setRetroIdx }) {
 
 export default function GuideView({
   assignments, playerStatus, getNightPhases,
-  killPlayer, executeInfect, doRetroSwap, resetGame,
+  killPlayer, revivePlayer, executeInfect, doRetroSwap, resetGame,
 }) {
   const [infectIdx, setInfectIdx] = useState(null);
   const [retroIdx, setRetroIdx] = useState(null);
+  const [hideNames, setHideNames] = useState(false);
   const phases = getNightPhases();
   const alive = playerStatus.filter(s => s !== 'dead').length;
 
@@ -63,6 +69,13 @@ export default function GuideView({
     <div className="fade-in game-guide">
       <div className="guide-header">
         <span className="guide-alive">🟢 {alive} حي</span>
+        <button
+          className={`btn-sm btn-eye-toggle ${hideNames ? 'eye-off' : ''}`}
+          onClick={() => setHideNames(h => !h)}
+          title={hideNames ? 'إظهار الأسماء' : 'إخفاء الأسماء'}
+        >
+          {hideNames ? '🙈' : '👁️'}
+        </button>
       </div>
 
       <div className="guide-card">
@@ -72,8 +85,10 @@ export default function GuideView({
             <PlayerRow
               key={i} a={a} i={i} status={playerStatus[i]}
               killPlayer={killPlayer}
+              revivePlayer={revivePlayer}
               openInfect={() => setInfectIdx(i)}
               setRetroIdx={setRetroIdx}
+              hideNames={hideNames}
             />
           ))}
         </div>
