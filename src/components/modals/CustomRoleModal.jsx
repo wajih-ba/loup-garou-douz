@@ -118,6 +118,12 @@ export default function CustomRoleModal({ editingId, roles, onSave, onDelete, on
               placeholder="ou URL de l'image"
               className="photo-url-input"
             />
+            <AiGenerateButton
+              roleId={editingId}
+              roleName={name}
+              onResult={setPhoto}
+              disabled={!!photo}
+            />
           </div>
           <div className="form-group">
             <label>Description</label>
@@ -136,5 +142,52 @@ export default function CustomRoleModal({ editingId, roles, onSave, onDelete, on
       </div>
     </div>,
     document.body
+  );
+}
+
+/* ─── AI Generate sub-component ─────────────────────────────────── */
+function AiGenerateButton({ roleId, roleName, onResult, disabled }) {
+  const [loading, setLoading] = useState(false);
+  const [aiError, setAiError] = useState('');
+
+  const generate = async () => {
+    setLoading(true);
+    setAiError('');
+    try {
+      const res = await fetch('/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: roleId || roleName }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error || 'Erreur inconnue');
+      onResult(data.image);
+    } catch (e) {
+      setAiError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="ai-generate-row">
+      <button
+        type="button"
+        className={`btn btn-ai-generate ${loading ? 'loading' : ''}`}
+        onClick={generate}
+        disabled={disabled || loading}
+        title={disabled ? 'Supprimez la photo actuelle pour générer une nouvelle' : 'Générer une image IA (~1 min)'}
+      >
+        {loading ? (
+          <>
+            <span className="ai-spinner" />
+            Génération en cours…
+          </>
+        ) : (
+          <>✨ Générer avec l'IA</>
+        )}
+      </button>
+      {aiError && <span className="ai-error">{aiError}</span>}
+    </div>
   );
 }

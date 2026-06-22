@@ -623,6 +623,71 @@
   outline: none;
 }
 .photo-url-input:focus { border-color: var(--accent); }
+
+/* ── AI Generate Button ── */
+.ai-generate-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.btn-ai-generate {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, #6c3fc5, #4a55d9);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(108,63,197,0.35);
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+.btn-ai-generate:not(:disabled):hover {
+  background: linear-gradient(135deg, #7d50d6, #5a65e8);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(108,63,197,0.5);
+}
+.btn-ai-generate:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.btn-ai-generate.loading {
+  pointer-events: none;
+  background: linear-gradient(135deg, #4a3280, #3840a0);
+}
+.ai-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: aiSpin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes aiSpin {
+  to { transform: rotate(360deg); }
+}
+.ai-error {
+  font-size: 0.78rem;
+  color: #f88;
+  background: rgba(217,74,74,0.12);
+  border: 1px solid rgba(217,74,74,0.3);
+  border-radius: 7px;
+  padding: 4px 10px;
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
 .team-selector { display: flex; gap: 8px; }
 .team-card {
   flex: 1;

@@ -145,9 +145,19 @@ export default function App() {
     setAssignments(prev => {
       const next = [...prev];
       const villager = roles.find(r => r.id === 'villager');
-      const fromRole = next[fromIdx].role;
-      next[fromIdx] = { ...next[fromIdx], role: next[toIdx].role, usedPower: true };
-      next[toIdx] = { ...next[toIdx], role: villager };
+      const fromInfected = next[fromIdx].infected || false;
+      const toInfected = next[toIdx].infected || false;
+      next[fromIdx] = {
+        ...next[fromIdx],
+        role: next[toIdx].role,
+        infected: toInfected,
+        usedPower: true,
+      };
+      next[toIdx] = {
+        ...next[toIdx],
+        role: villager,
+        infected: fromInfected,
+      };
       return next;
     });
   }, [roles]);
